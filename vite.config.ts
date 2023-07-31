@@ -4,6 +4,8 @@ import glsl from "vite-plugin-glsl";
 
 export default {
   // ...
-  target: "esnext",
+  build: {
+    target: "esnext",
+  },
   plugins: [glsl()],
 };
