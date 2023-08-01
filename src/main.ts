@@ -1,14 +1,12 @@
 import "./style.css";
 import * as THREE from "three";
-
-import vertexShader from "./shaders/vertexShader.glsl";
-import fragmentShader from "./shaders/fragmentShader.glsl";
-
-import { data } from "./imagesData";
-
 import { gsap } from "gsap";
 import { Observer } from "gsap/Observer";
 import { Reflector } from "three/examples/jsm/objects/Reflector.js";
+
+import vertexShader from "./shaders/vertexShader.glsl";
+import fragmentShader from "./shaders/fragmentShader.glsl";
+import { data } from "./imagesData";
 
 gsap.registerPlugin(Observer);
 
@@ -32,19 +30,16 @@ CANVAS.setAttribute("id", "webgl");
 
 document.body.appendChild(CANVAS);
 
-//
-const sizes = {
+const SIZES = {
   width: window.innerWidth,
   height: window.innerHeight,
 };
-
-//
 
 const scene = new THREE.Scene();
 
 const camera = new THREE.PerspectiveCamera(
   75,
-  sizes.width / sizes.height,
+  SIZES.width / SIZES.height,
   0.1,
   100
 );
@@ -124,26 +119,23 @@ scene.add(torus, groundMirror);
 
 /// RENDERER
 const renderer = new THREE.WebGLRenderer({ canvas: CANVAS });
-renderer.setSize(sizes.width, sizes.height);
+renderer.setSize(SIZES.width, SIZES.height);
 renderer.setPixelRatio(Math.max(window.devicePixelRatio, 2));
 
 /// GSAP
-const carrouselMove = (self: globalThis.Observer) => {
-  if (clickedImage) return;
-  const rotationSpeed = clickedImage ? 0.005 : 0.009;
-  const rotation = self.deltaY * rotationSpeed;
-  carrouselGroup.rotation.y += rotation;
-};
+
 Observer.create({
   target: window,
   type: "wheel,touch",
-  onChangeY: (self) => carrouselMove(self),
+  onChangeY: (self) => {
+    if (!clickedImage) carrouselGroup.rotation.y += self.deltaY * 0.005;
+  },
 });
 
-let initialScale = sizes.width > 960 ? 2 : 0.75;
+let initialScale = SIZES.width > 960 ? 2 : 0.75;
 
 const calculateScaleFactor = () =>
-  Math.min(window.innerWidth / sizes.width, window.innerHeight / sizes.height);
+  Math.min(window.innerWidth / SIZES.width, window.innerHeight / SIZES.height);
 
 let scaleFactor = calculateScaleFactor();
 
@@ -158,16 +150,16 @@ const mouse = new THREE.Vector2();
 const raycaster = new THREE.Raycaster();
 
 window.addEventListener("resize", () => {
-  sizes.width = window.innerWidth;
-  sizes.height = window.innerHeight;
+  SIZES.width = window.innerWidth;
+  SIZES.height = window.innerHeight;
 
-  camera.aspect = sizes.width / sizes.height;
+  camera.aspect = SIZES.width / SIZES.height;
   camera.updateProjectionMatrix();
 
   scaleFactor = calculateScaleFactor();
-  initialScale = sizes.width > 960 ? 2 : 0.75;
+  initialScale = SIZES.width > 960 ? 2 : 0.75;
 
-  renderer.setSize(sizes.width, sizes.height);
+  renderer.setSize(SIZES.width, SIZES.height);
 });
 
 // HOVER

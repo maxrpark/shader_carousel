@@ -43,10 +43,7 @@ const imagePromises = imagesData.map((data: ImageDataInt) => {
 
 export const data = Promise.all(imagePromises)
   .then((loadedImagesData) => {
-    // Now all textures are loaded and available in the 'loadedImagesData' array
     return loadedImagesData;
-
-    // Continue with setting up your carousel or scene using the 'loadedImagesData' array
   })
   .catch((error) => {
     console.error("Error loading images:", error);
