@@ -23,14 +23,14 @@ const debugObject = {
   imageHeight: 2,
 };
 
-const CANVAS = document.createElement("canvas");
-const CLOCK = new THREE.Clock();
+const canvas = document.createElement("canvas");
+const clock = new THREE.Clock();
 
-CANVAS.setAttribute("id", "webgl");
+canvas.setAttribute("id", "webgl");
 
-document.body.appendChild(CANVAS);
+document.body.appendChild(canvas);
 
-const SIZES = {
+const sizes = {
   width: window.innerWidth,
   height: window.innerHeight,
 };
@@ -39,7 +39,7 @@ const scene = new THREE.Scene();
 
 const camera = new THREE.PerspectiveCamera(
   75,
-  SIZES.width / SIZES.height,
+  sizes.width / sizes.height,
   0.1,
   100
 );
@@ -117,8 +117,8 @@ torus.material.toneMapped = false;
 scene.add(torus, groundMirror);
 
 /// RENDERER
-const renderer = new THREE.WebGLRenderer({ canvas: CANVAS });
-renderer.setSize(SIZES.width, SIZES.height);
+const renderer = new THREE.WebGLRenderer({ canvas });
+renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.max(window.devicePixelRatio, 2));
 
 /// GSAP
@@ -131,10 +131,10 @@ Observer.create({
   },
 });
 
-let initialScale = SIZES.width > 960 ? 2 : 0.75;
+let initialScale = sizes.width > 960 ? 2 : 0.75;
 
 const calculateScaleFactor = () =>
-  Math.min(window.innerWidth / SIZES.width, window.innerHeight / SIZES.height);
+  Math.min(window.innerWidth / sizes.width, window.innerHeight / sizes.height);
 
 let scaleFactor = calculateScaleFactor();
 
@@ -149,16 +149,16 @@ const mouse = new THREE.Vector2();
 const raycaster = new THREE.Raycaster();
 
 window.addEventListener("resize", () => {
-  SIZES.width = window.innerWidth;
-  SIZES.height = window.innerHeight;
+  sizes.width = window.innerWidth;
+  sizes.height = window.innerHeight;
 
-  camera.aspect = SIZES.width / SIZES.height;
+  camera.aspect = sizes.width / sizes.height;
   camera.updateProjectionMatrix();
 
   scaleFactor = calculateScaleFactor();
-  initialScale = SIZES.width > 960 ? 2 : 0.75;
+  initialScale = sizes.width > 960 ? 2 : 0.75;
 
-  renderer.setSize(SIZES.width, SIZES.height);
+  renderer.setSize(sizes.width, sizes.height);
 });
 
 // HOVER
@@ -267,7 +267,7 @@ const onClickImage = (event: MouseEvent) => {
 renderer.domElement.addEventListener("click", onClickImage);
 
 const tick = () => {
-  const elapsedTime = CLOCK.getElapsedTime();
+  const elapsedTime = clock.getElapsedTime();
   torus.rotation.x = elapsedTime;
 
   for (let mesh of carrouselGroup.children) {
