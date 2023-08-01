@@ -72,7 +72,6 @@ for (let i = 0; i < carrouselImages.length; i++) {
     new THREE.ShaderMaterial({
       vertexShader,
       fragmentShader,
-      side: THREE.DoubleSide,
       uniforms: {
         uTime: { value: debugObject.uTime },
         uSpeed: { value: debugObject.uSpeed },
