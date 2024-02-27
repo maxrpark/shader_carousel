@@ -123,11 +123,15 @@ renderer.setPixelRatio(Math.max(window.devicePixelRatio, 2));
 
 /// GSAP
 
+let rotationY = 0;
+
 Observer.create({
   target: window,
   type: "wheel,touch",
-  onChangeY: (self) => {
-    if (!clickedImage) carrouselGroup.rotation.y += self.deltaY * 0.005;
+  onChange: (self) => {
+    let y = -(self.velocityY / 10000).toFixed(2);
+    let x = -(self.velocityX / 10000).toFixed(2);
+    rotationY = y + x;
   },
 });
 
@@ -267,6 +271,10 @@ const onClickImage = (event: MouseEvent) => {
 renderer.domElement.addEventListener("click", onClickImage);
 
 const tick = () => {
+  if (!clickedImage) {
+    rotationY = THREE.MathUtils.lerp(rotationY, 0, 0.05);
+    carrouselGroup.rotation.y += rotationY;
+  }
   const elapsedTime = clock.getElapsedTime();
   torus.rotation.x = elapsedTime;
 
