@@ -129,6 +129,8 @@ Observer.create({
   target: window,
   type: "wheel,touch",
   onChange: (self) => {
+    if (clickedImage) return;
+
     let y = -(self.velocityY / 10000).toFixed(2);
     let x = -(self.velocityX / 10000).toFixed(2);
     rotationY = y + x;
